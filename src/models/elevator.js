@@ -1,3 +1,5 @@
+import { StateLogger } from '../utils/log';
+
 export default class elevator {
 
   constructor(name) {
@@ -5,9 +7,32 @@ export default class elevator {
     this._movement = {
       isMoving: false,
       direction: null
-    }
+    };
+    this.isDoorOpen = false;
   }
 
+  /**
+   * START: Door Controls
+   */
+  openDoor() {
+    if (this.isMoving) {
+      throw new Error('Jumping off a moving elevator is not a good idea. Let us keep the door shut for now');
+    }
+    this.isDoorOpen = true;
+    StateLogger('door-open', { name: this.name });
+  }
+
+  closeDoor() {
+    this.isDoorOpen = false;
+    StateLogger('door-close', { name: this.name });
+  }
+  /**
+   * END: Door Controls
+   */
+
+  /**
+   * START: Elevator Movement Controls
+   */
   get isMoving() {
     return this._movement && this._movement.isMoving;
   }
@@ -27,6 +52,7 @@ export default class elevator {
 
     this._movement.isMoving = true;
     this._movement.direction = 'up';
+    StateLogger('moving-up',{ name: this.name });
   }
 
   moveDown() {
@@ -36,11 +62,16 @@ export default class elevator {
 
     this._movement.isMoving = true;
     this._movement.direction = 'down';
+    StateLogger('moving-down',{ name: this.name });
   }
 
   stopMoving() {
     this._movement.isMoving = false;
     this._movement.direction = null;
+    StateLogger('stopped-moving',{ name: this.name });
   }
 
+  /**
+   * END: Elevator Movement Controls
+   */
 };
