@@ -76,6 +76,51 @@ class StateMachine {
 
     const elevatorCandidateForTargetFloor = () => {
       //find the elevator
+      const floorHasAvailableElevator = (floor) => {
+        let elevators = floor.elevators.values();
+        let availableElevator;
+
+        let elevator = elevators.next();
+
+        do {
+          if (elevator.value && elevator.value.isAvailable(floor.floorNumber, targetFloor)) {
+            availableElevator = elevator.value;
+          }
+
+          elevator = elevators.next();
+        }
+        while(!elevator.done && !availableElevator);
+
+        return availableElevator;
+      }
+
+      let foundElevator;
+      let foundOnFloor;
+      let index = targetFloor.floorNumber - 1; //This is to normalize the array index
+      let oneFloorUp = index+1;
+      let oneFloorDown = index-1;
+
+      foundElevator = floorHasAvailableElevator(this.floors[index]);
+      foundOnFloor = foundElevator && this.floors[index];
+
+      while (
+        !foundElevator &&
+        (oneFloorUp < this.floors.length || oneFloorDown >= 0)
+      ) {
+        if (oneFloorUp < this.floors.length) {
+          foundElevator = floorHasAvailableElevator(this.floors[oneFloorUp]);
+          foundOnFloor = foundElevator && this.floors[oneFloorUp];
+          oneFloorUp++;
+        }
+
+        if (!foundElevator && oneFloorDown >= 0) {
+          foundElevator = floorHasAvailableElevator(this.floors[oneFloorDown]);
+          foundOnFloor = foundElevator && this.floors[oneFloorDown];
+          oneFloorDown--;
+        }
+      }
+
+      return [foundElevator, foundOnFloor];
     };
 
     let [candidateElevator, candidateElevatorFloor] = elevatorCandidateForTargetFloor();
