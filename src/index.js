@@ -4,24 +4,21 @@ import { ErrorLog } from './utils/log';
 const app = () => {
   console.log('Application Initiated');
 
-  // Simulator
-  let elevators = 3;
-  let floors = 10;
-
   try {
+    // Simulator
+    let elevators = 3;
+    let floors = 10;
+
     StateMachine.initialize(floors, elevators);
+
+    // Each trip is a session. To begin a trip, we will request
+    // an elevator at a floor;
+    StateMachine.requestElevatorAtFloor(3).then((trip) => trip.goToFloor(7));
+
   }
   catch(e) {
     ErrorLog(e);
   }
-
-  // @todo Step 1: register floors and elevators
-
-  // @todo Step 2: request an elevator
-
-  // @todo Step 3: command elevator to go to a floor
-
-  // @todo Step 4: repeat above steps 2&3 as many times as desired
 };
 
 export default app;
