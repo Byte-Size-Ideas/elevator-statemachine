@@ -1,5 +1,7 @@
 import Floor from '../models/floor';
 import Elevator from '../models/elevator';
+import { StateLogger } from '../utils/log';
+import Trip from '../trip';
 
 class StateMachine {
   // @todo build out the state machine that will manage the elevator
@@ -68,7 +70,19 @@ class StateMachine {
     return this.floors[floorIndex];
   }
 
-  requestElevatorAtFloor(floorNumber) {
+  async requestElevatorAtFloor(floorNumber) {
+    StateLogger('floor-request', { floorNumber })
+    let targetFloor = this.getFloor(floorNumber);
+
+    const elevatorCandidateForTargetFloor = () => {
+      //find the elevator
+    };
+
+    let [candidateElevator, candidateElevatorFloor] = elevatorCandidateForTargetFloor();
+
+    let arrivalFloor = await this.goToFloor(candidateElevator, candidateElevatorFloor, targetFloor);
+
+    return new Trip(candidateElevator, arrivalFloor);
   }
 };
 

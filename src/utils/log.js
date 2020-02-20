@@ -16,6 +16,9 @@ export const StateLogger = (state, options) => {
     case 'stopped-moving':
       ElevatorDoorAndMovement(state,options);
       break;
+    case 'floor-request':
+      console.log(`Calling elevator to floor ${options.floorNumber}`);
+      break;
     default:
       ErrorLog(new Error(`No log definition found for state ${state}`));
       break;
