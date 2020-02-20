@@ -15,7 +15,7 @@ export default class floor {
   // Remove elevator from current floor
   removeElevator(elevator) {
     if (this.elevators.has(elevator)) {
-      this.elevators.remove(elevator);
+      this.elevators.delete(elevator);
     }
   }
 };

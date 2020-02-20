@@ -17,7 +17,10 @@ export const StateLogger = (state, options) => {
       ElevatorDoorAndMovement(state,options);
       break;
     case 'floor-request':
-      console.log(`Calling elevator to floor ${options.floorNumber}`);
+      console.log(`Calling elevator to floor ${options.floorNumber}.`);
+      break;
+    case 'go-to-floor':
+      console.log(`Going from floor ${options.currFloor} to ${options.targetFloor}.`);
       break;
     default:
       ErrorLog(new Error(`No log definition found for state ${state}`));

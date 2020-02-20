@@ -8,6 +8,7 @@ export default class Trip {
   }
 
   async goToFloor(targetFloor) {
-    StateMachine.goToFloor(this.elevator, this.currentFloor, targetFloor);
+    let targetFloorInstance = StateMachine.getFloor(targetFloor);
+    StateMachine.goToFloor(this.elevator, this.currentFloor, targetFloorInstance);
   }
 }

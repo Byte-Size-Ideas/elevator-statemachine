@@ -70,6 +70,48 @@ class StateMachine {
     return this.floors[floorIndex];
   }
 
+  async goToFloor(elevator, currentFloorInstance, targetFloorInstance) {
+    //Wait 1 second between elevator movements
+    const moveElevator = (elevator, currentFloor, nextFloor) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          currentFloor.removeElevator(elevator);
+          nextFloor.addElevator(elevator);
+
+            StateLogger(
+              'go-to-floor',
+              {
+                currFloor: currentFloor.floorNumber,
+                targetFloor: nextFloor.floorNumber
+              }
+            );
+
+          resolve(nextFloor);
+        }, 1000);
+      });
+    }
+
+    let currentFloor = currentFloorInstance.floorNumber;
+    let targetFloor = targetFloorInstance.floorNumber;
+
+    if (currentFloor < targetFloor) {
+      elevator.moveUp();
+    }
+    else {
+      elevator.moveDown();
+    }
+
+    while (currentFloor !== targetFloor) {
+      let nextFloor = (currentFloor < targetFloor) ? this.getFloor(currentFloor+1): this.getFloor(currentFloor-1);
+      currentFloorInstance = await moveElevator(elevator, currentFloorInstance, nextFloor);
+      currentFloor = currentFloorInstance.floorNumber;
+    }
+
+    elevator.stopMoving();
+
+    return elevator;
+  }
+
   async requestElevatorAtFloor(floorNumber) {
     StateLogger('floor-request', { floorNumber })
     let targetFloor = this.getFloor(floorNumber);
@@ -125,9 +167,9 @@ class StateMachine {
 
     let [candidateElevator, candidateElevatorFloor] = elevatorCandidateForTargetFloor();
 
-    let arrivalFloor = await this.goToFloor(candidateElevator, candidateElevatorFloor, targetFloor);
+    await this.goToFloor(candidateElevator, candidateElevatorFloor, targetFloor);
 
-    return new Trip(candidateElevator, arrivalFloor);
+    return new Trip(candidateElevator, targetFloor);
   }
 };
 
