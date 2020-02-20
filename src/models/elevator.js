@@ -50,6 +50,10 @@ export default class elevator {
       throw new Error('Elevator is moving down. It needs to stop before moving up.');
     }
 
+    if (this.isDoorOpen) {
+      throw new Error('Elevator cannot move with an open door.');
+    }
+
     this._movement.isMoving = true;
     this._movement.direction = 'up';
     StateLogger('moving-up',{ name: this.name });
@@ -58,6 +62,10 @@ export default class elevator {
   moveDown() {
     if (this.isMovingUp) {
       throw new Error('Elevator is moving up. It needs to stop before moving down.');
+    }
+
+    if (this.isDoorOpen) {
+      throw new Error('Elevator cannot move with an open door.');
     }
 
     this._movement.isMoving = true;
@@ -74,4 +82,39 @@ export default class elevator {
   /**
    * END: Elevator Movement Controls
    */
+
+  /**
+   * Elevator is available if the elevator
+   * door is closed and if it is either
+   * is stationary at the current floor
+   * or is moving in the direction of the
+   * target floor
+   */
+  isAvailable(currentFloor, targetFloor) {
+    if (this.isDoorOpen) {
+      return false;
+    }
+
+    let currentFloorNumber = currentFloor.floorNumber;
+    let targetFloorNumber = targetFloor.floorNumber;
+
+    if (targetFloorNumber === currentFloorNumber) {
+      return this.isMoving; //Not availalbe if moving through current floor, otherwise available
+    }
+
+    // If not moving, definitely availalbe
+    if (!this.isMoving) {
+      return true;
+    }
+
+    if (currentFloorNumber < targetFloorNumber && this.isMovingUp) {
+      return true;
+    }
+
+    if (currentFloorNumber > targetFloorNumber && this.isMovingDown) {
+      return true;
+    }
+
+    return false;
+  }
 };
