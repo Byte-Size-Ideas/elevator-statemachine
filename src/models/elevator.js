@@ -9,6 +9,15 @@ export default class elevator {
       direction: null
     };
     this.isDoorOpen = false;
+    this.tripCounter = 0;
+    this.inService = false;
+  }
+
+  logTrip() {
+    /**
+     * @todo increment the trip counter
+     * and set elevator into maintenance at 100 trips
+     */
   }
 
   /**
@@ -91,6 +100,10 @@ export default class elevator {
    * target floor
    */
   isAvailable(currentFloor, targetFloor) {
+    /**
+     * @todo check to see if elevator is in maintenance
+     */
+
     if (this.isDoorOpen) {
       return false;
     }
