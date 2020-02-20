@@ -1,4 +1,5 @@
 import StateMachine from './state-machine';
+import Log from './utils/log';
 
 const app = () => {
   console.log('Application Initiated');
@@ -7,9 +8,15 @@ const app = () => {
   let elevators = 3;
   let floors = 10;
 
-  let SM = new StateMachine();
+  try {
 
-  SM.introduce();
+    let SM = new StateMachine();
+
+    SM.initialize(0,1);
+  }
+  catch(e) {
+    Log(e);
+  }
 
   // @todo Step 1: register floors and elevators
 
