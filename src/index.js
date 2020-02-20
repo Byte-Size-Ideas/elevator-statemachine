@@ -9,10 +9,7 @@ const app = () => {
   let floors = 10;
 
   try {
-
-    let SM = new StateMachine();
-
-    SM.initialize(0,1);
+    StateMachine.initialize(floors, elevators);
   }
   catch(e) {
     ErrorLog(e);
