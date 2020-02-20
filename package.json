@@ -1,0 +1,7 @@
+{
+  "name": "elevator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Sarfaraz Suleman <sarfarazs21@gmail.com>",
+  "license": "MIT"
+}
