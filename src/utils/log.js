@@ -1,4 +1,4 @@
-export default (e) => {
+export const ErrorLog = (e) => {
   if (e.message) {
     console.error(`ERROR: ${e.message}`);
   }

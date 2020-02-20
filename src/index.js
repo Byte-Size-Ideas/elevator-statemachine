@@ -1,5 +1,5 @@
 import StateMachine from './state-machine';
-import Log from './utils/log';
+import { ErrorLog } from './utils/log';
 
 const app = () => {
   console.log('Application Initiated');
@@ -15,7 +15,7 @@ const app = () => {
     SM.initialize(0,1);
   }
   catch(e) {
-    Log(e);
+    ErrorLog(e);
   }
 
   // @todo Step 1: register floors and elevators
